@@ -6,22 +6,34 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:pull": "dotenv -e .env drizzle-kit introspect:pg",
+    "db:migrations:generate": "dotenv -e .env drizzle-kit generate:pg",
+    "db:migrations:drop": "dotenv -e .env drizzle-kit drop",
+    "db:migrations:apply": "dotenv -e .env bun ./db/migrate.ts",
+    "db:studio": "dotenv -e .env drizzle-kit studio"
   },
   "dependencies": {
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.28.6",
+    "next": "14.0.1",
+    "pg": "^8.11.3",
+    "postgres": "^3.4.3",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.0.1"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "dotenv-cli": "^7.3.0",
+    "drizzle-kit": "^0.19.13",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.1",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.1"
+    "typescript": "^5"
   }
 }
