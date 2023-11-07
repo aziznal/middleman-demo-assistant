@@ -24,6 +24,14 @@ const environmentSchema = z.object(
       required_error: "OPEN_AI_API_KEY is required",
       invalid_type_error: "OPEN_AI_API_KEY must be a string",
     }),
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string({
+      required_error: "NEXT_PUBLIC_SUPABASE_ANON_KEY is required",
+      invalid_type_error: "NEXT_PUBLIC_SUPABASE_ANON_KEY must be a string",
+    }),
+    NEXT_PUBLIC_SUPABASE_URL: z.string({
+      required_error: "NEXT_PUBLIC_SUPABASE_URL is required",
+      invalid_type_error: "NEXT_PUBLIC_SUPABASE_URL must be a string",
+    }),
   },
   {
     required_error: "Environment was not found",

@@ -1,12 +1,13 @@
-import { pgTable, uuid, text, boolean, index } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, index, integer } from "drizzle-orm/pg-core";
 
-export const todos = pgTable(
-  "todos",
+export const services = pgTable(
+  "services",
   {
     id: uuid("id").notNull().primaryKey().defaultRandom(),
     title: text("title").notNull(),
     description: text("description").notNull(),
-    completed: boolean("completed").notNull().default(false),
+    workingHours: text("working_hours").notNull(),
+    rating: integer("rating").notNull(),
   },
   (table) => ({
     titleIndex: index("title_index").on(table.title),

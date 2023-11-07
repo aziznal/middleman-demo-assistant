@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 
 const Page = () => {
-  return redirect("/create-service");
+  return redirect("/browse-services");
 };
 
 export default Page;
