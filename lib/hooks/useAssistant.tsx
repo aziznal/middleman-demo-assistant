@@ -2,7 +2,11 @@ import { AssistantRequest } from "@/app/api/assistant/_schema";
 import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
 import { useState } from "react";
 
-const useAssistant = () => {
+type UseAssistantProps = {
+  onMessageReceived?: () => void;
+};
+
+const useAssistant = ({ onMessageReceived }: UseAssistantProps) => {
   const [messages, setMessages] = useState<ThreadMessage[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,6 +48,7 @@ const useAssistant = () => {
       }
     } finally {
       setIsSubmitting(false);
+      onMessageReceived?.();
     }
   };
 

@@ -7,7 +7,14 @@ import useAssistant from "@/lib/hooks/useAssistant";
 import { useEffect, useRef } from "react";
 
 const Page = () => {
-  const { messages, submit, isSubmitting, error } = useAssistant();
+  const { messages, submit, isSubmitting, error } = useAssistant({
+    onMessageReceived: () => {
+      // focus on input after message is received
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
+    },
+  });
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {

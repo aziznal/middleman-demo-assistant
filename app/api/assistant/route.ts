@@ -8,7 +8,7 @@ import { assistantRequestSchema } from "./_schema";
 import dbClient from "@/db/client";
 
 import * as schema from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, ilike } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
   const parsedReqBody = assistantRequestSchema.safeParse(await req.json());
@@ -89,6 +89,38 @@ export async function POST(req: NextRequest) {
           },
         },
       },
+
+      // Function to list all current user's services
+      {
+        type: "function",
+        function: {
+          name: "update_existing_service",
+          description:
+            "Updates a service created by the current user. User is prompted to provide the name of the service to update, where the names are listed by the overview_current_user_services function. This returns the id of the service to the user allowing it to be used in further operations. Assistant will continue to use the name and not the id of the service.",
+          parameters: {
+            type: "object",
+            properties: {
+              currentTitle: {
+                type: "string",
+                description: "The current title of the service (case insensitive)",
+              },
+              title: {
+                type: "string",
+                description: "The updated title of the service",
+              },
+              description: {
+                type: "string",
+                description: "The updated description of the service",
+              },
+              workingHours: {
+                type: "string",
+                description:
+                  "an updated description of the working hours of the service",
+              },
+            },
+          },
+        },
+      },
     ],
   });
 
@@ -149,10 +181,58 @@ export async function POST(req: NextRequest) {
             {
               tool_call_id: callId,
               output:
-                "Service successfully created. Browse at url: http://localhost:3000/services",
+                "Service successfully created. Browse at url: http://localhost:3000/browse-services",
             },
           ],
         });
+      }
+
+      if (functionName === "update_existing_service") {
+        const args = JSON.parse(
+          newRun.required_action?.submit_tool_outputs.tool_calls[0].function
+            .arguments || "{}"
+        );
+
+        console.log(`update service function args: ${JSON.stringify(args)}`);
+
+        const userService = await dbClient.query.services.findFirst({
+          where: and(
+            eq(schema.services.userId, user.id),
+            // loosely match the title
+            ilike(schema.services.title, `%${args.currentTitle}%`)
+          ),
+        });
+
+        console.log(`userService: ${JSON.stringify(userService)}`);
+
+        if (!userService) {
+          await openai.beta.threads.runs.submitToolOutputs(threadId, run.id, {
+            tool_outputs: [
+              {
+                tool_call_id: callId,
+                output: "Service not found or user does not own service",
+              },
+            ],
+          });
+        } else {
+          await dbClient
+            .update(schema.services)
+            .set({
+              title: args.title,
+              description: args.description,
+              workingHours: args.workingHours,
+            })
+            .where(eq(schema.services.id, userService.id));
+
+          await openai.beta.threads.runs.submitToolOutputs(threadId, run.id, {
+            tool_outputs: [
+              {
+                tool_call_id: callId,
+                output: "Service successfully updated",
+              },
+            ],
+          });
+        }
       }
     }
   }
