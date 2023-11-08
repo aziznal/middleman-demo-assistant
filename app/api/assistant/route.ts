@@ -102,7 +102,8 @@ export async function POST(req: NextRequest) {
             properties: {
               currentTitle: {
                 type: "string",
-                description: "The current title of the service (case insensitive)",
+                description:
+                  "The current title of the service (case insensitive)",
               },
               title: {
                 type: "string",
@@ -124,9 +125,9 @@ export async function POST(req: NextRequest) {
     ],
   });
 
-  // loop for 10 seconds, checking if run has completed
+  // loop for 15 seconds, checking if run has completed
   const start = Date.now();
-  while (Date.now() - start < 10000) {
+  while (Date.now() - start < 15000) {
     const newRun = await openai.beta.threads.runs.retrieve(threadId, run.id);
     console.log("checking newRun");
     console.log(newRun.status);

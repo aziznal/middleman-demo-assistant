@@ -7,7 +7,7 @@ import useAssistant from "@/lib/hooks/useAssistant";
 import { useEffect, useRef } from "react";
 
 const Page = () => {
-  const { messages, submit, isSubmitting, error } = useAssistant({
+  const { messages, submit, reload, isSubmitting, error } = useAssistant({
     onMessageReceived: () => {
       // focus on input after message is received
       setTimeout(() => {
@@ -84,6 +84,10 @@ const Page = () => {
 
         <Button onClick={handleSubmit} disabled={isSubmitting}>
           Submit
+        </Button>
+
+        <Button onClick={reload} disabled={isSubmitting}>
+          Reload
         </Button>
       </div>
 

@@ -52,11 +52,45 @@ const useAssistant = ({ onMessageReceived }: UseAssistantProps) => {
     }
   };
 
+  const reload = async () => {
+    setIsSubmitting(true);
+    setError(null);
+
+    const threadId = getThreadIdFromExistingMessages(messages);
+
+    try {
+      if (!threadId) {
+        return;
+      }
+
+      const response = await fetch(`/api/threads/${threadId}/messages`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const newMessages = (await response.json()) as {
+        messages: ThreadMessage[];
+      };
+
+      setMessages(newMessages.messages);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+    } finally {
+      setIsSubmitting(false);
+      onMessageReceived?.();
+    }
+  };
+
   return {
     messages,
     setMessages,
     isSubmitting,
     submit,
+    reload,
     error,
   };
 };
