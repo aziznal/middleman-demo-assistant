@@ -93,7 +93,7 @@ const Page = () => {
           Submit
         </Button>
 
-        <Button onClick={reload} disabled={isSubmitting}>
+        <Button onClick={reload} variant="ghost" disabled={isSubmitting}>
           Reload
         </Button>
       </div>
