@@ -40,9 +40,9 @@ const Page = () => {
               message.content.map((content) => {
                 if (content.type === "text") {
                   return (
-                    <ParsedMarkdown key={content.text.value}>
-                      {content.text.value}
-                    </ParsedMarkdown>
+                    <div key={content.text.value} className="prose">
+                      <ParsedMarkdown>{content.text.value}</ParsedMarkdown>
+                    </div>
                   );
                 }
 

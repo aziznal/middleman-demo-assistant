@@ -1,5 +1,5 @@
 import ReactMarkdown from "react-markdown";
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 import remarkGfm from "remark-gfm";
 
 /*
@@ -36,6 +36,28 @@ export const ParsedMarkdown = ({ children }: { children: string }) => {
             {children}
           </ol>
         ),
+        li: ({
+          children: listItemChildren,
+          ...props
+        }: PropsWithChildren<{}>) => {
+          const childrenWithInlineParagraphs = React.Children.map(
+            listItemChildren,
+            (child) => {
+              // Check if the child is a React element and its type is `p`
+              if (React.isValidElement(child) && child.type === "p") {
+                // Replace it with a span to keep it inline
+                return <span>{child.props.children}</span>;
+              }
+              return child;
+            }
+          );
+
+          return (
+            <li className="list-decimal list-inside ml-4" {...props}>
+              {childrenWithInlineParagraphs}
+            </li>
+          );
+        },
         hr: () => <hr className="my-4 w-full border-t border-t-border-color" />,
 
         pre: ({ children }: PropsWithChildren) => (
