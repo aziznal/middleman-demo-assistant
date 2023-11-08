@@ -20,9 +20,9 @@ const environmentSchema = z.object(
       required_error: "DATABASE_PASSWORD is required",
       invalid_type_error: "DATABASE_PASSWORD must be a string",
     }),
-    OPEN_AI_API_KEY: z.string({
-      required_error: "OPEN_AI_API_KEY is required",
-      invalid_type_error: "OPEN_AI_API_KEY must be a string",
+    NEXT_PUBLIC_OPEN_AI_API_KEY: z.string({
+      required_error: "NEXT_PUBLIC_OPEN_AI_API_KEY is required",
+      invalid_type_error: "NEXT_PUBLIC_OPEN_AI_API_KEY must be a string",
     }),
     NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string({
       required_error: "NEXT_PUBLIC_SUPABASE_ANON_KEY is required",

@@ -15,6 +15,20 @@
       "when": 1699387810809,
       "tag": "0001_eminent_nightcrawler",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1699393748137,
+      "tag": "0002_outstanding_morbius",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1699394631399,
+      "tag": "0003_tired_red_ghost",
+      "breakpoints": true
     }
   ]
 }

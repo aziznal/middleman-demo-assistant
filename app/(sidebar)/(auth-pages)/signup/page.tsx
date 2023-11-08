@@ -78,6 +78,11 @@ export default function LoginPage() {
         });
       }
 
+      await supabase.from("users").insert({
+        id: data?.user?.id,
+        email: formValues.email,
+      });
+
       toast({
         title: "Success",
         description: "Account created successfully",

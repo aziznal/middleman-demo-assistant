@@ -15,7 +15,7 @@ declare global {
       DATABASE_PASSWORD: string;
 
       /** The OpenAI API key for using the assistants and functions api */
-      OPEN_AI_API_KEY: string;
+      NEXT_PUBLIC_OPEN_AI_API_KEY: string;
 
       NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
       NEXT_PUBLIC_SUPABASE_URL: string;
