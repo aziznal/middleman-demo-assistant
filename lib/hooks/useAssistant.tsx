@@ -6,7 +6,7 @@ type UseAssistantProps = {
   onMessageReceived?: () => void;
 };
 
-const useAssistant = ({ onMessageReceived }: UseAssistantProps) => {
+const useAssistant = (props?: UseAssistantProps) => {
   const [messages, setMessages] = useState<ThreadMessage[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +48,7 @@ const useAssistant = ({ onMessageReceived }: UseAssistantProps) => {
       }
     } finally {
       setIsSubmitting(false);
-      onMessageReceived?.();
+      props?.onMessageReceived?.();
     }
   };
 
@@ -81,7 +81,7 @@ const useAssistant = ({ onMessageReceived }: UseAssistantProps) => {
       }
     } finally {
       setIsSubmitting(false);
-      onMessageReceived?.();
+      props?.onMessageReceived?.();
     }
   };
 

@@ -7,19 +7,26 @@ import useAssistant from "@/lib/hooks/useAssistant";
 import { useEffect, useRef } from "react";
 
 const Page = () => {
-  const { messages, submit, reload, isSubmitting, error } = useAssistant({
-    onMessageReceived: () => {
-      // focus on input after message is received
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 0);
-    },
-  });
+  const { messages, submit, reload, isSubmitting, error } = useAssistant();
+
   const inputRef = useRef<HTMLInputElement>(null);
+  const messageViewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     console.log(messages);
   }, [messages]);
+
+  useEffect(() => {
+    if (isSubmitting) return;
+
+    messageViewRef.current?.scrollTo({
+      behavior: "smooth",
+      top: messageViewRef.current.scrollHeight + 1000,
+    });
+
+    // focus on input when loading finishes
+    inputRef.current?.focus();
+  }, [isSubmitting]);
 
   const handleSubmit = () => {
     if (inputRef?.current?.value) {
@@ -30,7 +37,7 @@ const Page = () => {
 
   return (
     <div className="flex flex-col mx-auto w-[800px]">
-      <div className="min-h-[500px] flex flex-col gap-5">
+      <div className="min-h-[500px] flex flex-col gap-5" ref={messageViewRef}>
         {messages.map((message) => (
           <div key={message.id}>
             <>
@@ -70,7 +77,7 @@ const Page = () => {
         {isSubmitting && <div className="text-gray-400">Loading...</div>}
       </div>
 
-      <div className="flex gap-2 mt-6">
+      <div className="flex gap-2 mt-6 pb-72">
         <Input
           ref={inputRef}
           onSubmit={handleSubmit}
