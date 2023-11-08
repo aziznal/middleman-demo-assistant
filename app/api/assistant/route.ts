@@ -8,6 +8,7 @@ import { assistantRequestSchema } from "./_schema";
 import dbClient from "@/db/client";
 
 import * as schema from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
   const parsedReqBody = assistantRequestSchema.safeParse(await req.json());
@@ -115,6 +116,7 @@ export async function POST(req: NextRequest) {
           with: {
             services: true,
           },
+          where: eq(schema.users.id, user.id),
         });
 
         await openai.beta.threads.runs.submitToolOutputs(threadId, run.id, {
