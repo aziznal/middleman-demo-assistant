@@ -8,7 +8,7 @@ type DbType = PostgresJsDatabase<typeof schema>;
 const createDbClient = (): DbType => {
   const connectionString = process.env.DATABASE_URL;
   const client = postgres(connectionString);
-  return drizzle<typeof schema>(client);
+  return drizzle<typeof schema>(client, { schema });
 };
 
 const dbClient = createDbClient();
