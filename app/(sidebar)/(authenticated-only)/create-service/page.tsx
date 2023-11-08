@@ -1,5 +1,6 @@
 "use client";
 
+import { ParsedMarkdown } from "@/components/ui/ParsedMarkdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useAssistant from "@/lib/hooks/useAssistant";
@@ -35,15 +36,27 @@ const Page = () => {
               )}
             </>
 
-            <>
-              {message.content.map((content) => {
+            {message.role === "assistant" &&
+              message.content.map((content) => {
+                if (content.type === "text") {
+                  return (
+                    <ParsedMarkdown key={content.text.value}>
+                      {content.text.value}
+                    </ParsedMarkdown>
+                  );
+                }
+
+                return "";
+              })}
+
+            {message.role === "user" &&
+              message.content.map((content) => {
                 if (content.type === "text") {
                   return <p key={content.text.value}>{content.text.value}</p>;
                 }
 
                 return "";
               })}
-            </>
           </div>
         ))}
 
